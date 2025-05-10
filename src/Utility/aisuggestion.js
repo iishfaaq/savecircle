@@ -30,3 +30,13 @@ export function getWeeklySuggestion(transactions) {
   }
   return "Great job with your daily savings habit!";
 }
+
+export async function fetchAISuggestion(goal) {
+  const res = await fetch('http://localhost:5000/ai-suggestion', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ goal })
+  });
+  const data = await res.json();
+  return data.suggestion;
+}

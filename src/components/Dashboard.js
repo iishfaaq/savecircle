@@ -8,7 +8,7 @@ import SavingsIcon from '@mui/icons-material/Savings';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { useTranslation } from 'react-i18next';
-import { getAISuggestion } from './aiSuggestionUtil'; // or define in the same file
+import { fetchAISuggestion } from '../utils/fetchAISuggestion';
 
 async function fetchAISuggestion(userData) {
   const res = await fetch('http://localhost:3001/ai-suggestion', {
@@ -43,7 +43,9 @@ export default function Dashboard({ user, onLogout }) {
   }, [user.id]);
 
   useEffect(() => {
-    fetchAISuggestion(userData).then(setAiSuggestion);
+    if (userData && userData.goals && userData.goals.length > 0) {
+      fetchAISuggestion(userData.goals[0].transcript || userData.goals[0].name).then(setAiSuggestion);
+    }
   }, [userData]);
 
   if (!userData) return <Typography>Loading...</Typography>;
